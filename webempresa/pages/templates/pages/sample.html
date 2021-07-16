@@ -1,0 +1,34 @@
+{% extends 'core/base.html' %}
+
+{% load static %}
+
+{% block title %}Muestra{% endblock %}
+
+{% block content %}
+<section class="page-section about-heading">
+  <div class="container">
+    <div class="about-heading-content mbtm">
+      <div class="row">
+        <div class="col-xl-9 col-lg-10 mx-auto">
+          <div class="bg-faded rounded p-5 forced">
+            <h2 class="section-heading mb-4">
+              <span class="section-heading-lower">{{page.title}}</span>{# page. es el contenido de pagina que le pasamos al template desde la views.py con su diccionario de contexto y title es el titulo del page_id que le pasamos por la url que puede ser, 1, 2 o 3. #}
+            </h2>
+            <div class="section-content">
+                {{page.content|safe}} {# con esta variable se recupera el contenido con todo y sus saltos de línea, de la página dependiendo el page_id pasado por la url 1,2 o 3 -------- pasamos de {{page.content|linebreaks}} a {{page.content|safe}} para que django interprete el código html de forma segura puesto por el editor de texto wyziwig ckeditor  #}
+                {# {{user}}  con esto imprimimos en el frontend el usuario identificado en la sesión actual, esto está inyectado gracias al procesador de contextto django.contrib.auth.context_processors.auth’ de /webempresa/settings.py  #}
+                
+                {% if user.is_authenticated %}
+                  <p>
+                    {{user}} <a href="{% url 'admin:pages_page_change' page.id %}"> Editar el orden </a> {# cuando estamos identificados aparecerá el mensaje de editar orden #}
+                                    {# En donde usando la TT url, nos referiremos a la app admin: --- hacemos referencia a la app pages con "pages_"  ---- luego el modelo que queremos editar "page_"  --- y  ponemos la acción que queremos ejecutar "change"  todo entre comillas simples '' con esto hacemos referencia a un path de las urls ---- y como parámetro le pasaremos el "page.id" #}
+                  </p>
+                {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
